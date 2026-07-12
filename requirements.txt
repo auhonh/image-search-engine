@@ -1,0 +1,10 @@
+torch>=2.2
+torchvision>=0.17
+numpy>=1.26
+opencv-python>=4.9
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+gradio>=4.26
+pillow>=10.0
+pytest>=8.0

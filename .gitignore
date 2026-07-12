@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+data/corpus/
+data/embeddings/
+data/index_cache/
+data/_raw/
+.DS_Store
