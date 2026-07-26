@@ -1,6 +1,6 @@
 # Image similarity search engine
 
-A Pinterest-style visual search engine built from scratch: CNN embeddings, a
+A visual search engine built from scratch: CNN embeddings, a
 custom approximate-nearest-neighbor index (LSH and HNSW, no FAISS), and a
 weighted ranking layer — served through FastAPI with a Gradio demo UI.
 

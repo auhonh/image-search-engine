@@ -1,0 +1,20 @@
+[
+  {
+    "index_name": "lsh",
+    "n_corpus": 1900,
+    "n_queries": 100,
+    "k": 10,
+    "recall_at_k": 0.385,
+    "mean_query_ms": 0.134,
+    "speedup_vs_brute": 1.5
+  },
+  {
+    "index_name": "hnsw",
+    "n_corpus": 1900,
+    "n_queries": 100,
+    "k": 10,
+    "recall_at_k": 1.0,
+    "mean_query_ms": 0.616,
+    "speedup_vs_brute": 0.32
+  }
+]
