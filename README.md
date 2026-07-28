@@ -25,21 +25,22 @@ top-K ranked results
 ## Benchmark results
 
 Run `python -m scripts.run_benchmark` to regenerate. Numbers below are from a
-2,000-image corpus (CIFAR-10 subset), 100 held-out queries, k=10:
+real 2,000-image corpus (STL-10 subset, ResNet-50 embeddings), 100 held-out
+queries, k=10:
 
 | Index | Recall@10 | Mean query (ms) | Speedup vs brute force |
 |-------|-----------|-----------------|------------------------|
-| LSH   | 0.878     | 0.38            | 2.5x                   |
-| HNSW  | 1.000     | 0.72            | 1.3x                   |
-
-*(Numbers above are from 2,000 synthetic clustered 2048-dim vectors as a
-sanity baseline — regenerate with real image embeddings via the command
-above and replace this table.)*
+| LSH   | 0.467     | 0.10            | 1.81x                  |
+| HNSW  | 1.000     | 0.39            | 0.47x                  |
 
 An honest finding worth knowing: at only ~2k vectors, brute force (one
-vectorized matmul) is hard to beat from pure-Python index code. The ANN
-advantage grows with corpus size — rerun the benchmark at 10k+ images to
-see the gap widen.
+vectorized matmul) is hard to beat from pure-Python index code — HNSW is
+actually slower than brute force here despite perfect recall, and LSH's
+default `n_bits`/`n_tables` trade noticeably more recall than the earlier
+synthetic-vector benchmark suggested, since real ResNet embeddings cluster
+differently than the synthetic ones. The ANN advantage grows with corpus
+size — rerun the benchmark at 10k+ images to see the gap widen, and tune
+LSH's `n_tables`/`n_bits` if you need higher recall at this corpus size.
 
 Key tradeoff explored: LSH `n_tables` controls recall, `n_bits` controls
 bucket precision. HNSW `ef_search` trades latency for recall smoothly.
@@ -64,6 +65,28 @@ uvicorn api.main:app --reload
 ```
 
 On Apple Silicon, the encoder automatically uses the MPS backend.
+
+### Using your own photos
+
+`data/corpus/` just needs to contain image files somewhere under it —
+`build_corpus` recursively globs for `.jpg/.jpeg/.png/.webp/.bmp` and doesn't
+care about folder names or nesting; the per-class subfolders from
+`download_corpus.py` are purely organizational.
+
+```bash
+# copy your own photos in (flat, or in whatever folders you like)
+cp ~/Pictures/vacation/*.jpg data/corpus/my_photos/
+
+python -m scripts.build_index      # re-embeds everything under data/corpus/ + rebuilds LSH/HNSW
+python -m ui.app                   # or uvicorn api.main:app --reload
+```
+
+To mix in the STL-10 demo set alongside your own photos, just leave the
+downloaded class folders in place — `build_index` embeds the whole tree.
+To replace the demo set entirely, delete `data/corpus/{airplane,bird,car,...}`
+before adding your photos, and delete `data/embeddings/` and
+`data/index_cache/` so stale vectors/indexes aren't reused (`build_index`
+regenerates both).
 
 ## Project layout
 

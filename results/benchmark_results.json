@@ -4,9 +4,9 @@
     "n_corpus": 1900,
     "n_queries": 100,
     "k": 10,
-    "recall_at_k": 0.385,
-    "mean_query_ms": 0.134,
-    "speedup_vs_brute": 1.5
+    "recall_at_k": 0.467,
+    "mean_query_ms": 0.101,
+    "speedup_vs_brute": 1.81
   },
   {
     "index_name": "hnsw",
@@ -14,7 +14,7 @@
     "n_queries": 100,
     "k": 10,
     "recall_at_k": 1.0,
-    "mean_query_ms": 0.616,
-    "speedup_vs_brute": 0.32
+    "mean_query_ms": 0.393,
+    "speedup_vs_brute": 0.47
   }
 ]
